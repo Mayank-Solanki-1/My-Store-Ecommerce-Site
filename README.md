@@ -52,11 +52,11 @@ How to Run the Project:
 
    • Import schema.sql into MySQL
 
-   • Update DBConnection.java with your database username/password
+   • Update application.properties with your database username/password
 
 4. Configure Tomcat
 
-   • Select Tomcat 9
+   • Download and Select Tomcat 9 
 
    • Deploy the project
 
