@@ -12,6 +12,7 @@ import java.io.IOException;
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
     private final UserDAO userDAO = new UserDAO();
+    private static final String ADMIN_SECRET_KEY = "SuperSecret123"; // Change to your real secret
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -19,7 +20,8 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String confirm = req.getParameter("confirm");
-        String role = req.getParameter("role"); // Should only be buyer or seller
+        String role = req.getParameter("role");
+        String adminKey = req.getParameter("adminKey");
 
         // New buyer info fields
         String phone = req.getParameter("phone");
@@ -42,16 +44,13 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // Prevent admin registration
-        if ("admin".equalsIgnoreCase(role)) {
-            req.setAttribute("error", "Admin registration is not allowed.");
-            req.getRequestDispatcher("/register.jsp").forward(req, resp);
-            return;
-        }
-
-        // Default to buyer if role is invalid
-        if (!"buyer".equalsIgnoreCase(role) && !"seller".equalsIgnoreCase(role)) {
-            role = "buyer";
+        // Admin secret key validation
+        if ("admin".equals(role)) {
+            if (adminKey == null || !ADMIN_SECRET_KEY.equals(adminKey)) {
+                req.setAttribute("error", "Invalid Admin Secret Key");
+                req.getRequestDispatcher("/register.jsp").forward(req, resp);
+                return;
+            }
         }
 
         // Create User object
@@ -62,7 +61,7 @@ public class RegisterServlet extends HttpServlet {
         u.setRole(role);
 
         // Set buyer info only if role is buyer
-        if ("buyer".equalsIgnoreCase(role)) {
+        if ("buyer".equals(role)) {
             u.setPhone(phone);
             u.setAddress(address);
             u.setCity(city);
@@ -78,10 +77,18 @@ public class RegisterServlet extends HttpServlet {
             session.setAttribute("user", u);
 
             // Redirect based on role
-            if ("seller".equalsIgnoreCase(u.getRole())) {
-                resp.sendRedirect(req.getContextPath() + "/seller/dashboard");
-            } else {
-                resp.sendRedirect(req.getContextPath() + "/buyer/dashboard");
+            switch (u.getRole()) {
+                case "seller":
+                    resp.sendRedirect(req.getContextPath() + "/seller/dashboard");
+                    break;
+                case "buyer":
+                    resp.sendRedirect(req.getContextPath() + "/buyer/dashboard");
+                    break;
+                case "admin":
+                    resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/index.jsp");
             }
         } else {
             req.setAttribute("error", "Registration failed (Email might be taken)");
