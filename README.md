@@ -31,7 +31,7 @@ Role-Based Access Control: Validated access to specific dashboards (Admin, Selle
 
 Auto-Login: Immediate redirection to the dashboard after registration.
 
-1. Admin Module
+1. Admin Module (Admin register is only allowed when Admin secret key =SuperSecret123)
 
 2. Seller Module
 
