@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+remove option of admin from register.jsp --><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -124,11 +124,18 @@
         <!-- Role -->
         <div class="mb-3">
             <label class="form-label">Register As</label>
-            <select name="role" class="form-select" required>
+            <select name="role" class="form-select" id="roleSelect" required>
                 <option value="">Select Role</option>
                 <option value="buyer">Buyer</option>
                 <option value="seller">Seller</option>
+                <option value="admin">Admin</option>
             </select>
+        </div>
+
+        <!-- Admin Secret Key -->
+        <div class="mb-3" id="adminKeyDiv" style="display:none;">
+            <label class="form-label">Admin Secret Key</label>
+            <input type="password" name="adminKey" class="form-control" placeholder="Enter Admin Key">
         </div>
 
         <!-- Submit -->
@@ -147,6 +154,17 @@
 <footer class="text-center mt-5 py-3 bg-white shadow-sm">
     <p class="mb-0">© 2025 MyStore — All Rights Reserved</p>
 </footer>
+
+<script>
+    // Show admin key input only if Admin role is selected
+    $('#roleSelect').on('change', function () {
+        if ($(this).val() === 'admin') {
+            $('#adminKeyDiv').slideDown();
+        } else {
+            $('#adminKeyDiv').slideUp();
+        }
+    });
+</script>
 
 </body>
 </html>
