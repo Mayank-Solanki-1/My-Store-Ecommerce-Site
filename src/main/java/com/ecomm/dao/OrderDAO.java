@@ -213,7 +213,7 @@ public class OrderDAO {
                 "FROM orders o " +
                 "JOIN order_items oi ON o.id = oi.order_id " +
                 "JOIN products p ON oi.product_id = p.id " +
-                "WHERE p.seller_id = ? " +
+                "WHERE p.seller_id = ? AND WHERE is_active = TRUE " +
                 "ORDER BY o.created_at DESC";
 
         try (Connection conn = ds.getConnection();
@@ -286,7 +286,7 @@ public class OrderDAO {
         String sql = "SELECT p.name, oi.quantity, oi.unit_price " +
                 "FROM order_items oi " +
                 "JOIN products p ON oi.product_id = p.id " +
-                "WHERE oi.order_id = ?";
+                "WHERE oi.order_id = ? ";
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, orderId);
@@ -308,7 +308,7 @@ public class OrderDAO {
         String sql = "SELECT p.name, oi.quantity, oi.unit_price " +
                 "FROM order_items oi " +
                 "JOIN products p ON oi.product_id = p.id " +
-                "WHERE oi.order_id = ? AND p.seller_id = ?";
+                "WHERE oi.order_id = ? AND p.seller_id = ? AND is_active = TRUE" ;
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, orderId);
@@ -337,7 +337,7 @@ public class OrderDAO {
                 "FROM orders o " +
                 "JOIN order_items oi ON o.id = oi.order_id " +
                 "JOIN products p ON oi.product_id = p.id " +
-                "WHERE o.buyer_id = ? " +
+                "WHERE o.buyer_id = ? AND is_active = TRUE " +
                 "GROUP BY o.id ORDER BY o.created_at DESC";
 
         try (Connection c = ds.getConnection();
@@ -379,7 +379,7 @@ public class OrderDAO {
                 "FROM orders o " +
                 "JOIN order_items oi ON o.id = oi.order_id " +
                 "JOIN products p ON oi.product_id = p.id " +
-                "WHERE p.seller_id = ? " +
+                "WHERE p.seller_id = ?  " +
                 "ORDER BY o.created_at DESC";
 
         try (Connection conn = ds.getConnection();

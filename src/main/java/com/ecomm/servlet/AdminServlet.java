@@ -135,7 +135,7 @@ public class AdminServlet extends HttpServlet {
     private void handleProductAction(HttpServletRequest req, HttpServletResponse resp, String action) throws IOException {
         if ("delete".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));
-            productDAO.delete(id);
+            productDAO.softDelete(id);
         }
         resp.sendRedirect(req.getContextPath() + "/admin/products");
     }

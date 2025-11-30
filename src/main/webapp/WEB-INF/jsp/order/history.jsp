@@ -58,6 +58,8 @@
                             <th>Items</th>
                             <th>Total Amount</th>
                             <th>Status</th>
+                            <th>Process</th>
+
                             <th>Placed On</th>
                             <th>Invoice</th>
                         </tr>
@@ -95,6 +97,29 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
+                                  <td>
+                                                     <c:choose>
+                                                         <c:when test="${o.process == 'Pending'}">
+                                                             <span class="badge bg-warning text-dark">Pending</span>
+                                                         </c:when>
+                                                         <c:when test="${o.process == 'Processing'}">
+                                                             <span class="badge bg-primary">Processing</span>
+                                                         </c:when>
+                                                         <c:when test="${o.process == 'Shipped'}">
+                                                             <span class="badge bg-info text-dark">Shipped</span>
+                                                         </c:when>
+                                                         <c:when test="$o.process == 'Delivered'}">
+                                                             <span class="badge bg-success">Delivered</span>
+                                                         </c:when>
+                                                         <c:when test="${o.process == 'Cancelled'}">
+                                                             <span class="badge bg-danger">Cancelled</span>
+                                                         </c:when>
+                                                         <c:otherwise>
+                                                             <span class="badge bg-secondary">${o.process}</span>
+                                                         </c:otherwise>
+                                                     </c:choose>
+                                                 </td>
+
 
                                 <td>${o.createdAt}</td>
 

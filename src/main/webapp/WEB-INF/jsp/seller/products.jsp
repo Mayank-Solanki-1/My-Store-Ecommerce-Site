@@ -126,15 +126,15 @@
 <script>
     // AJAX Delete (Fixed)
     function deleteProduct(id, name) {
-         const data = {
-                    action: 'delete',  id: id }
         if (!confirm(`Remove product ${name}?`)) return;
 
-        $.post('<c:url value="/product/action"/>',data,function () {
-                // Remove the row from HTML after successful delete
-                $('#productRow' + id).remove();
+        $.post('<c:url value="/product/action"/>',
+            { action: 'delete', id: id },
+            function() {
+                // Hide the row instead of reloading page
+                $('#productRow' + id).fadeOut(300, function() { $(this).remove(); });
             }
-        ).fail(function (xhr) {
+        ).fail(function(xhr){
             alert('Cannot delete product: ' + xhr.responseText);
         });
     }

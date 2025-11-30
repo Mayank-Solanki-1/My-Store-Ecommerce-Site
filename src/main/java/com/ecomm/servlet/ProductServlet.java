@@ -83,7 +83,7 @@ public class ProductServlet extends HttpServlet {
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));
                 if (canModify(user, id)) {
-                    productDAO.delete(id);
+                    productDAO.softDelete(id);
                     resp.setStatus(HttpServletResponse.SC_OK);
                 } else {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Cannot delete product");
